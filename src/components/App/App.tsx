@@ -11,30 +11,38 @@ function App() {
     neutral: 0,
     bad: 0,
   });
-  function handleVotes(VoteType: VoteType) {
+
+  function handleVotes(voteType: VoteType) {
     setVotes((prevVotes) => ({
       ...prevVotes,
-      [VoteType]: prevVotes[VoteType] + 1,
+      [voteType]: prevVotes[voteType] + 1,
     }));
-    console.log(votes);
   }
   function resetVotes() {
+    console.log("resetVotes called");
     setVotes({
       good: 0,
       neutral: 0,
       bad: 0,
     });
-    console.log(votes);
   }
 
   const totalVotes = votes.good + votes.neutral + votes.bad;
   const positiveRate = totalVotes
     ? Math.round((votes.good / totalVotes) * 100)
     : 0;
+  const canReset = totalVotes > 0;
+
+  console.log("App rendered. totalVotes:", totalVotes, "canReset:", canReset);
+
   return (
     <div className={css.app}>
       <CafeInfo />
-      <VoteOptions onVote={handleVotes} onReset={resetVotes} />
+      <VoteOptions
+        onVote={handleVotes}
+        onReset={resetVotes}
+        canReset={canReset}
+      />
       {totalVotes > 0 && (
         <VoteStats
           votes={votes}
